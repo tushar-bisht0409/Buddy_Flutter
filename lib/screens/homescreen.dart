@@ -1,9 +1,16 @@
+import 'dart:io';
+
 import 'package:buddy/main.dart';
 import 'package:buddy/screens/menuscreen.dart';
 import 'package:buddy/screens/searchscreen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:buddy/screens/feedscreen.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+var appDir;
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -11,6 +18,42 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  void createDir() async {
+    Directory baseDir = await getExternalStorageDirectory(); //only for Android
+    // print("dir  ${baseDir.path}");
+    // Directory baseDir =
+    //     await getApplicationDocumentsDirectory(); //works for both iOS and Android
+    // String baseDir = "/storage/emulated/0/Android/";
+    String newDir = "Buddy";
+    String finalDir = join(baseDir.path, newDir);
+    appDir = Directory(finalDir);
+    bool dirExists = await appDir.exists();
+    if (!dirExists) {
+      await appDir.create(recursive: true);
+    }
+  }
+
+  Future<bool> _requestPermission() async {
+    Permission permission = Permission.storage;
+    if (await permission.isGranted) {
+      return true;
+    } else {
+      var result = await permission.request();
+      if (result == PermissionStatus.granted) {
+        return true;
+      } else {
+        await _requestPermission();
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    _requestPermission();
+    createDir();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     toppad = MediaQuery.of(context).padding.top.ceil();

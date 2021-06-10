@@ -2,11 +2,11 @@ import 'package:buddy/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class MessageBubble extends StatelessWidget {
+class TextMessageBubble extends StatelessWidget {
   String msz;
   String createdAt;
   bool isMe;
-  MessageBubble(this.msz, this.isMe, this.createdAt);
+  TextMessageBubble(this.msz, this.isMe, this.createdAt);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -24,7 +24,7 @@ class MessageBubble extends StatelessWidget {
         ),
       ),
       constraints: BoxConstraints(
-          maxWidth: ScreenUtil().setWidth(170),
+          maxWidth: ScreenUtil().setWidth(220),
           minWidth: ScreenUtil().setWidth(30)),
       padding: EdgeInsets.symmetric(
         vertical: ScreenUtil().setHeight(8),

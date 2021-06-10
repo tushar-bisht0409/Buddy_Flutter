@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:buddy/main.dart';
-import 'package:buddy/models/http_exception.dart';
 import 'package:buddy/models/messageinfo.dart';
 import 'package:dio/dio.dart';
 
@@ -19,20 +18,39 @@ class ChatBloc {
 
       try {
         if (event.action == 'receive') {
-          response = await dio.get(serverURl + '/gettextmsz',
-              queryParameters: {"chatID": "12"});
+          response = await dio
+              .get(serverURl + '/getmsz', queryParameters: {"chatID": "12"});
         } else if (event.action == 'send') {
-          response = await dio.post(serverURl + '/posttextmsz',
-              data: {
-                "chatID": event.chatID,
-                "text": event.text,
-                "senderID": event.senderID,
-                "receiverID": event.receiverID,
-                "status": event.status,
-                "createdAt": event.createdAt,
-                "timestamp": event.timestamp
-              },
-              options: Options(contentType: Headers.formUrlEncodedContentType));
+          FormData data;
+          if (event.category == 'text') {
+            data = FormData.fromMap({
+              "chatID": event.chatID,
+              "text": event.text,
+              "senderName": event.senderName,
+              "senderID": event.senderID,
+              "receiverID": event.receiverID,
+              "status": event.status,
+              "createdAt": event.createdAt,
+              "category": event.category,
+              "timestamp": event.timestamp,
+            });
+          } else {
+            String fileName = event.mediaPath.split("/").last;
+            data = FormData.fromMap({
+              "chatID": event.chatID,
+              "text": event.text,
+              "senderName": event.senderName,
+              "senderID": event.senderID,
+              "receiverID": event.receiverID,
+              "status": event.status,
+              "createdAt": event.createdAt,
+              "category": event.category,
+              "timestamp": event.timestamp,
+              "file": await MultipartFile.fromFile(event.mediaPath,
+                  filename: fileName)
+            });
+          }
+          response = await dio.post(serverURl + '/postmsz', data: data);
         }
       } catch (e) {
         print(e);

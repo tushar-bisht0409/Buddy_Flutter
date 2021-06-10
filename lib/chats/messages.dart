@@ -1,5 +1,6 @@
 import 'package:buddy/blocs/chat_bloc.dart';
-import 'package:buddy/chats/messagebubble.dart';
+import 'package:buddy/chats/mediamessagebubble.dart';
+import 'package:buddy/chats/textmessagebubble.dart';
 import 'package:buddy/main.dart';
 import 'package:buddy/models/messageinfo.dart';
 import 'package:flutter/material.dart';
@@ -37,22 +38,29 @@ class Messages extends StatelessWidget {
             } else {
               isMe = false;
             }
-             return
-             // Column(
-            //   children: [
+            return
+                // Column(
+                //   children: [
                 Align(
                     alignment: isMe == true
                         ? Alignment.centerRight
                         : Alignment.centerLeft,
-                    child: MessageBubble(mszinfo[index]['text'], isMe,
-                        mszinfo[index]['createdAt']));
-              //   index == 0
-              //       ? Text('Yooo')
-              //       : SizedBox(
-              //           height: 0,
-              //           width: 0,
-              //         )
-              // ],
+                    child: mszinfo[index]['category'] == "text"
+                        ? TextMessageBubble(mszinfo[index]['text'], isMe,
+                            mszinfo[index]['createdAt'])
+                        : MediaMessageBubble(
+                            mszinfo[index]['text'],
+                            isMe,
+                            mszinfo[index]['createdAt'],
+                            mszinfo[index]['category'],
+                            mszinfo[index]['mediaPath']));
+            //   index == 0
+            //       ? Text('Yooo')
+            //       : SizedBox(
+            //           height: 0,
+            //           width: 0,
+            //         )
+            // ],
             // );
           },
         );

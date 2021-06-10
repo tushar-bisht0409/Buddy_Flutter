@@ -1,4 +1,5 @@
 import 'package:buddy/blocs/chat_bloc.dart';
+import 'package:buddy/chats/attachments.dart';
 import 'package:buddy/main.dart';
 import 'package:buddy/models/messageinfo.dart';
 import 'package:flutter/material.dart';
@@ -19,42 +20,7 @@ class _NewMessageState extends State<NewMessage> {
 
   var ico = Icons.mic_rounded;
 
-  Future<void> setchatlist(String txt) async {
-//    String '' = FirebaseAuth.instance.currentUser.uid;
-    // final dtnow = DateTime.now();
-    // await FirebaseFirestore.instance
-    //     .collection('users')
-    //     .doc()
-    //     .collection('chatroom')
-    //     .doc('receiverid')
-    //     .set({
-    //   'rid': 'receiverid',
-    //   'created at': DateFormat(
-    //     'dd MMM, h:m a',
-    //   ).format(dtnow),
-    //   'last message': 'You: $txt',
-    //   'status': 'read'
-    // });
-
-    // await FirebaseFirestore.instance
-    //     .collection('users')
-    //     .doc('receiverid')
-    //     .collection('chatroom')
-    //     .doc('')
-    //     .set({
-    //   'rid': '',
-    //   'created at': DateFormat(
-    //     'dd MMM, h:m a',
-    //   ).format(dtnow),
-    //   'last message': txt,
-    //   'status': 'unread'
-    // });
-
-    //   FirebaseFirestore.instance
-    //       .collection('message and notification status')
-    //       .doc('')
-    //       .update({'message status': 'unread'});
-  }
+  Future<void> setchatlist(String txt) async {}
 
   Future<void> createchatroom() async {
     final a = 'senderid';
@@ -72,10 +38,13 @@ class _NewMessageState extends State<NewMessage> {
   void _sendMessage(String mszbody) async {
     mszobj.action = 'send';
     mszobj.chatID = '12';
+    mszobj.senderName = "";
     mszobj.receiverID = '';
     mszobj.senderID = userID;
     mszobj.text = mszbody;
     mszobj.status = 'unread';
+    mszobj.category = "text";
+    mszobj.mediaPath = "";
     mszobj.createdAt = DateFormat(
       'h:m a',
     ).format(DateTime.now()).toString();
@@ -116,7 +85,9 @@ class _NewMessageState extends State<NewMessage> {
                         Icons.emoji_emotions_rounded,
                         size: ScreenUtil().setWidth(20),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        print("object");
+                      },
                     ),
                     Container(
                       //height: ScreenUtil().setHeight(40),
@@ -156,45 +127,34 @@ class _NewMessageState extends State<NewMessage> {
                           });
                         },
                       ),
-                      //   _controller.text != null || _controller.text != ''
-                      //       ? IconButton(
-                      //           //  color: Theme.of(context).primaryColor,
-                      //           icon: Icon(
-                      //             Icons.send_sharp,
-                      //             size: ScreenUtil().setWidth(20),
-                      //           ),
-                      //           onPressed: () {},
-                      //         )
-                      //       : SizedBox(
-                      //           height: 0,
-                      //           width: 0,
-                      //         )
-                      // ]),
                     ),
-
-                    // _controller.text != null || _controller.text != ''
-                    //     ? SizedBox(height: 0, width: 0)
-                    //     :
                     IconButton(
-                      //  color: Theme.of(context).primaryColor,
                       icon: Icon(
                         ico,
                         size: ScreenUtil().setWidth(20),
                       ),
                       onPressed: () {
                         if (_enteredMessage.trim().isEmpty == false) {
+                          ico = Icons.mic_rounded;
                           _sendMessage(_controller.text);
+                          ico = Icons.mic_rounded;
                           _controller.text = '';
-                        }
+                        } else {}
                       },
                     ),
                     IconButton(
-                      //  color: Theme.of(context).primaryColor,
                       icon: Icon(
                         Icons.attach_file_rounded,
                         size: ScreenUtil().setWidth(20),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        showModalBottomSheet(
+                            backgroundColor: Colors.transparent,
+                            context: context,
+                            builder: (BuildContext context) {
+                              return attachments(context);
+                            });
+                      },
                     ),
                   ],
                 ),

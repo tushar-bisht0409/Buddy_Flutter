@@ -29,7 +29,12 @@ dependencies:
   image_picker:
   dio:
   intl:
-  
+  file_picker:
+  camera:
+  video_player:
+  path_provider:
+  permission_handler:
+  path:
 
 
   # The following adds the Cupertino Icons font to your application.
