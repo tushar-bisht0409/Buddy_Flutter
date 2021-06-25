@@ -10,14 +10,12 @@ import 'package:buddy/screens/profileinfoscreen.dart';
 import 'package:buddy/screens/sandcprofilescreen.dart';
 import 'package:buddy/screens/sandcscreen.dart';
 import 'package:buddy/screens/searchscreen.dart';
+import 'package:buddy/screens/storyscreen.dart';
 import 'package:buddy/screens/videoviewscreen.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:buddy/screens/homescreen.dart';
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
-//import 'package:firebase_core/firebase_core.dart';
-//import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 int homeIndex = 0;
 int toppad = 0;
@@ -69,6 +67,7 @@ class MyApp extends StatelessWidget {
                     CameraScreen.routeName: (context) => CameraScreen(),
                     ImageViewScreen.routeName: (context) => ImageViewScreen(),
                     VideoViewScreen.routeName: (context) => VideoViewScreen(),
+                    StoryScreen.routeName: (context) => StoryScreen('', '', ''),
                   });
             }));
   }

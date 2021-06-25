@@ -37,14 +37,7 @@ class ImageViewScreen extends StatelessWidget {
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
-        actions: [
-          // IconButton(
-          //     icon: Icon(
-          //       Icons.crop_rotate,
-          //       size: 27,
-          //     ),
-          //     onPressed: () {}),
-        ],
+        actions: [],
       ),
       body: Container(
         width: MediaQuery.of(context).size.width,
@@ -71,8 +64,6 @@ class ImageViewScreen extends StatelessWidget {
                     color: Colors.white,
                     fontSize: 17,
                   ),
-                  maxLines: 6,
-                  minLines: 1,
                   decoration: InputDecoration(
                       border: InputBorder.none,
                       hintText: "Add Caption....",

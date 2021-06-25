@@ -164,23 +164,7 @@ class _FeedScreenState extends State<FeedScreen>
                         child: TabBarView(
                             controller: _tabController,
                             children: <Widget>[
-                              ListView(children: <Widget>[
-                                SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Row(
-                                    children: [
-                                      FeedStory(true),
-                                      FeedStory(false),
-                                      FeedStory(false),
-                                      FeedStory(false),
-                                      FeedStory(false),
-                                      FeedStory(false)
-                                    ],
-                                  ),
-                                ),
-                                FeedPost(),
-                                FeedPost()
-                              ]),
+                              FeedStory(),
                               Center(
                                 child: Text('It\'s rainy here'),
                               ),

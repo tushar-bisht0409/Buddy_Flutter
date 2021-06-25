@@ -91,8 +91,6 @@ class _VideoViewScreenState extends State<VideoViewScreen> {
                     color: Colors.white,
                     fontSize: 17,
                   ),
-                  maxLines: 6,
-                  minLines: 1,
                   decoration: InputDecoration(
                       border: InputBorder.none,
                       hintText: "Add Caption....",

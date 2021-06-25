@@ -18,11 +18,10 @@ class MediaMessageBubble extends StatelessWidget {
       this.msz, this.isMe, this.createdAt, this.category, this.mediaPath);
   @override
   Widget build(BuildContext context) {
-    // mediabloc.eventSink.add("ea45db9992098463752a22bf5d39876e.jpg");
     return StreamBuilder(
         stream: mediabloc.base64Stream,
         builder: (ctx, snapshot) {
-          mediabloc.eventSink.add(mediaPath);
+          mediabloc.eventSink.add([mediaPath, "Images"]);
           return Container(
             decoration: BoxDecoration(
               color: isMe ? acolor.secondary : acolor.primary,
