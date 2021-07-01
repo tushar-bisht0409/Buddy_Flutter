@@ -2,6 +2,7 @@
 import 'package:buddy/models/appcolor.dart';
 import 'package:buddy/screens/authscreen.dart';
 import 'package:buddy/screens/camerscreen.dart';
+import 'package:buddy/screens/commentscreen.dart';
 import 'package:buddy/screens/groupchatscreen.dart';
 import 'package:buddy/screens/imageviewScreen.dart';
 import 'package:buddy/screens/menuscreen.dart';
@@ -64,10 +65,11 @@ class MyApp extends StatelessWidget {
                         ProfileInfoScreen(),
                     SearchScreen.routeName: (context) => SearchScreen(),
                     PersonChatScreen.routeName: (context) => PersonChatScreen(),
-                    CameraScreen.routeName: (context) => CameraScreen(),
+                    CameraScreen.routeName: (context) => CameraScreen(""),
                     ImageViewScreen.routeName: (context) => ImageViewScreen(),
                     VideoViewScreen.routeName: (context) => VideoViewScreen(),
                     StoryScreen.routeName: (context) => StoryScreen('', '', ''),
+                    CommentScreen.routeName: (context) => CommentScreen(""),
                   });
             }));
   }

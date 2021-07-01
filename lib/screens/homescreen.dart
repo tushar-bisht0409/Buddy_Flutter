@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:buddy/main.dart';
 import 'package:buddy/screens/menuscreen.dart';
 import 'package:buddy/screens/searchscreen.dart';
+import 'package:buddy/widgets/addpost.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:buddy/screens/feedscreen.dart';
@@ -165,14 +166,25 @@ class _HomeScreenState extends State<HomeScreen> {
           Positioned(
               bottom: ScreenUtil().setHeight(75) - ScreenUtil().setHeight(20),
               left: ScreenUtil().setWidth(180) - ScreenUtil().setHeight(20),
-              child: CircleAvatar(
-                backgroundColor: acolor.primary,
-                radius: ScreenUtil().setHeight(20),
-                child: Icon(
-                  Icons.add,
-                  color: Colors.white,
-                  size: ScreenUtil().setHeight(20),
+              child: GestureDetector(
+                child: CircleAvatar(
+                  backgroundColor: acolor.primary,
+                  radius: ScreenUtil().setHeight(20),
+                  child: Icon(
+                    Icons.add,
+                    color: Colors.white,
+                    size: ScreenUtil().setHeight(20),
+                  ),
                 ),
+                onTap: () {
+                  showModalBottomSheet(
+                      backgroundColor: Colors.transparent,
+                      context: context,
+                      isScrollControlled: true,
+                      builder: (BuildContext context) {
+                        return AddPost("", "");
+                      });
+                },
               ))
         ]));
   }

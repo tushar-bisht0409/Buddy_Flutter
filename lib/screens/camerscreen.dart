@@ -2,6 +2,8 @@ import 'dart:math';
 
 import 'package:buddy/screens/imageviewScreen.dart';
 import 'package:buddy/screens/videoviewscreen.dart';
+import 'package:buddy/widgets/addpost.dart';
+import 'package:buddy/widgets/addstory.dart';
 import 'package:camera/camera.dart';
 // import 'package:chatapp/Screens/CameraView.dart';
 // import 'package:chatapp/Screens/VideoView.dart';
@@ -14,7 +16,8 @@ List<CameraDescription> cameras;
 class CameraScreen extends StatefulWidget {
   static const routeName = '/camera';
 
-  CameraScreen({Key key}) : super(key: key);
+  String type;
+  CameraScreen(this.type);
 
   @override
   _CameraScreenState createState() => _CameraScreenState();
@@ -99,25 +102,29 @@ class _CameraScreenState extends State<CameraScreen> {
                                 : _cameraController.setFlashMode(FlashMode.off);
                           }),
                       GestureDetector(
-                        onLongPress: () async {
-                          await _cameraController.startVideoRecording();
-                          setState(() {
-                            isRecoring = true;
-                          });
-                        },
-                        onLongPressUp: () async {
-                          XFile videopath =
-                              await _cameraController.stopVideoRecording();
-                          setState(() {
-                            isRecoring = false;
-                          });
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (builder) => VideoViewScreen(
-                                        path: videopath.path,
-                                      )));
-                        },
+                        onLongPress: widget.type == "Message"
+                            ? () async {
+                                await _cameraController.startVideoRecording();
+                                setState(() {
+                                  isRecoring = true;
+                                });
+                              }
+                            : null,
+                        onLongPressUp: widget.type == "Message"
+                            ? () async {
+                                XFile videopath = await _cameraController
+                                    .stopVideoRecording();
+                                setState(() {
+                                  isRecoring = false;
+                                });
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (builder) => VideoViewScreen(
+                                              path: videopath.path,
+                                            )));
+                              }
+                            : null,
                         onTap: () {
                           if (!isRecoring) takePhoto(context);
                         },
@@ -157,13 +164,15 @@ class _CameraScreenState extends State<CameraScreen> {
                   SizedBox(
                     height: 4,
                   ),
-                  Text(
-                    "Hold for Video, tap for photo",
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                    textAlign: TextAlign.center,
-                  )
+                  widget.type == "Message"
+                      ? Text(
+                          "Hold for Video, tap for photo",
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                          textAlign: TextAlign.center,
+                        )
+                      : SizedBox()
                 ],
               ),
             ),
@@ -175,11 +184,21 @@ class _CameraScreenState extends State<CameraScreen> {
 
   void takePhoto(BuildContext context) async {
     XFile file = await _cameraController.takePicture();
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (builder) => ImageViewScreen(
-                  path: file.path,
-                )));
+    if (widget.type == "Message") {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (builder) => ImageViewScreen(
+                    path: file.path,
+                  )));
+    } else if (widget.type == "Story") {
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (builder) => AddStory("Image", file.path)));
+    } else if (widget.type == "Post") {
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (builder) => AddPost(file.path, "image")));
+    }
   }
 }

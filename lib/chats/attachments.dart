@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:buddy/blocs/chat_bloc.dart';
 import 'package:buddy/main.dart';
 import 'package:buddy/models/messageinfo.dart';
 import 'package:buddy/screens/camerscreen.dart';
@@ -77,8 +76,8 @@ void selectFile() async {
 
 Widget attachments(BuildContext context) {
   void openCamera() {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (builder) => CameraScreen()));
+    Navigator.push(context,
+        MaterialPageRoute(builder: (builder) => CameraScreen("Message")));
   }
 
   Widget iconCreation(

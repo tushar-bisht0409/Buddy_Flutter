@@ -1,16 +1,16 @@
 import 'dart:async';
 import 'package:buddy/main.dart';
-import 'package:buddy/models/feedinfo.dart';
+import 'package:buddy/models/commentinfo.dart';
 import 'package:dio/dio.dart';
 
 class CommentBloc {
   final _stateStreamController = StreamController<dynamic>.broadcast();
-  StreamSink<dynamic> get _feedInfoSink => _stateStreamController.sink;
-  Stream<dynamic> get feedInfoStream => _stateStreamController.stream;
+  StreamSink<dynamic> get _commentInfoSink => _stateStreamController.sink;
+  Stream<dynamic> get commentInfoStream => _stateStreamController.stream;
 
-  final _eventStreamController = StreamController<FeedInfo>();
-  StreamSink<FeedInfo> get eventSink => _eventStreamController.sink;
-  Stream<FeedInfo> get _eventStream => _eventStreamController.stream;
+  final _eventStreamController = StreamController<CommentInfo>();
+  StreamSink<CommentInfo> get eventSink => _eventStreamController.sink;
+  Stream<CommentInfo> get _eventStream => _eventStreamController.stream;
 
   CommentBloc() {
     _eventStream.listen((event) async {
@@ -18,39 +18,52 @@ class CommentBloc {
 
       try {
         if (event.action == 'receive') {
-          response = await dio.get(serverURl + '/getcomment',
-              queryParameters: {"feedID": event.feedID});
-        } else if (event.action == 'send') {
-          FormData data;
-          if (event.category == 'text') {
-            data = FormData.fromMap({
-              "feedID": event.feedID,
-              "text": event.caption,
-              "senderName": event.creatorName,
-              "senderID": event.creatorID,
-              "createdAt": event.createdAt,
-              "timestamp": event.timestamp,
-            });
+          if (event.isCommentReply) {
+            response = await dio.get(serverURl + '/getcommentreply',
+                queryParameters: {"commentID": event.commentID});
           } else {
-            String fileName = event.mediaPath.split("/").last;
-            data = FormData.fromMap({
-              "feedID": event.feedID,
-              "text": event.caption,
-              "senderName": event.creatorName,
-              "senderID": event.creatorID,
-              "createdAt": event.createdAt,
-              "category": event.category,
-              "timestamp": event.timestamp,
-              "file": await MultipartFile.fromFile(event.mediaPath,
-                  filename: fileName)
-            });
+            response = await dio.get(serverURl + '/getcomment',
+                queryParameters: {"feedID": event.feedID});
           }
-          response = await dio.post(serverURl + '/postcomment', data: data);
+        } else if (event.action == 'send') {
+          if (event.isCommentReply) {
+            var commentdata = {
+              "commentID": event.commentID,
+              "commentreplyID": event.commentreplyID,
+              "text": event.text,
+              "senderName": event.senderName,
+              "senderID": event.senderID,
+              "createdAt": event.createdAt,
+              "timestamp": event.timestamp,
+            };
+
+            response = await dio.post(
+              serverURl + '/postcommentreply',
+              data: commentdata,
+              options: Options(contentType: Headers.formUrlEncodedContentType),
+            );
+          } else {
+            var commentdata = {
+              "commentID": event.commentID,
+              "feedID": event.feedID,
+              "text": event.text,
+              "senderName": event.senderName,
+              "senderID": event.senderID,
+              "createdAt": event.createdAt,
+              "timestamp": event.timestamp,
+            };
+
+            response = await dio.post(
+              serverURl + '/postcomment',
+              data: commentdata,
+              options: Options(contentType: Headers.formUrlEncodedContentType),
+            );
+          }
         }
       } catch (e) {
         print(e);
       }
-      _feedInfoSink.add(response.data['msz']);
+      _commentInfoSink.add([response.data['msz'], response.data['success']]);
     });
   }
 

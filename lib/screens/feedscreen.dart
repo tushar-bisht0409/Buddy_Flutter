@@ -1,8 +1,5 @@
-import 'package:buddy/screens/groupchatscreen.dart';
 import 'package:buddy/screens/personchatscreen.dart';
-import 'package:buddy/screens/profileinfoscreen.dart';
 import 'package:buddy/widgets/feedpost.dart';
-import 'package:buddy/widgets/feedstory.dart';
 import 'package:buddy/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -24,7 +21,7 @@ class _FeedScreenState extends State<FeedScreen>
   @override
   void initState() {
     super.initState();
-    _tabController = new TabController(vsync: this, length: 4);
+    _tabController = new TabController(vsync: this, length: 3);
     _tabController.addListener(_handleTabSelection);
   }
 
@@ -74,14 +71,14 @@ class _FeedScreenState extends State<FeedScreen>
       tabs: [
         Tab(
           child: Text(
-            'Academia',
+            'Following',
             style:
                 TextStyle(color: tbcolor[0], fontSize: ScreenUtil().setSp(12)),
           ),
         ),
         Tab(
           child: Text(
-            'Following',
+            'Academia',
             style:
                 TextStyle(color: tbcolor[1], fontSize: ScreenUtil().setSp(12)),
           ),
@@ -93,13 +90,6 @@ class _FeedScreenState extends State<FeedScreen>
                 TextStyle(color: tbcolor[2], fontSize: ScreenUtil().setSp(12)),
           ),
         ),
-        Tab(
-          child: Text(
-            'Custom',
-            style:
-                TextStyle(color: tbcolor[3], fontSize: ScreenUtil().setSp(12)),
-          ),
-        )
       ],
     );
     return Column(children: <Widget>[
@@ -129,7 +119,7 @@ class _FeedScreenState extends State<FeedScreen>
       ),
       DefaultTabController(
           initialIndex: 0,
-          length: 4,
+          length: 3,
           child: Container(
               alignment: Alignment.topCenter,
               child: Column(
@@ -164,16 +154,9 @@ class _FeedScreenState extends State<FeedScreen>
                         child: TabBarView(
                             controller: _tabController,
                             children: <Widget>[
-                              FeedStory(),
-                              Center(
-                                child: Text('It\'s rainy here'),
-                              ),
-                              Center(
-                                child: Text('It\'s sunny here'),
-                              ),
-                              Center(
-                                child: Text('It\'s nothing here'),
-                              )
+                              FeedPost("Following"),
+                              FeedPost("Academia"),
+                              FeedPost("World"),
                             ])),
                   ]))),
     ]);

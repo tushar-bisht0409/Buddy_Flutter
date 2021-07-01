@@ -54,14 +54,6 @@ class Messages extends StatelessWidget {
                             mszinfo[index]['createdAt'],
                             mszinfo[index]['category'],
                             mszinfo[index]['mediaPath']));
-            //   index == 0
-            //       ? Text('Yooo')
-            //       : SizedBox(
-            //           height: 0,
-            //           width: 0,
-            //         )
-            // ],
-            // );
           },
         );
       },

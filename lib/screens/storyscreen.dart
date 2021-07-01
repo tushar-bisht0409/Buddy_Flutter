@@ -29,7 +29,7 @@ class _StoryScreenState extends State<StoryScreen> {
   var storyIndex; // storyBy index
   var inIndex; // story index of stories of a single creator
   // VideoPlayerController _videoController;
-  var storyTimer;
+  Timer storyTimer;
   String filePath;
   bool exitStory = false;
 
@@ -56,11 +56,14 @@ class _StoryScreenState extends State<StoryScreen> {
   var mediaPath;
   var caption;
   String creatorID;
+  int startTime;
+  int widthTime;
 
   @override
   void initState() {
     storyIndex = widget.currentIndex;
     inIndex = 0;
+    widthTime = 0;
     for (int i = 0; i < widget.storyBy.length; i++) {
       print(widget.storyBy[i]);
       stories["${widget.storyBy[i]}"] = [];
@@ -101,25 +104,37 @@ class _StoryScreenState extends State<StoryScreen> {
     caption = stories["$creatorID"][inIndex]["caption"];
     void changeStory(int secTime) {
       storyLoading = false;
-      storyTimer = Timer(Duration(seconds: secTime), () {
+      startTime = 0;
+      storyTimer = Timer.periodic(Duration(seconds: 1), (Timer timer) {
         if (mounted) {
           setState(() {
+            startTime++;
+            if (widthTime < startTime) {
+              widthTime = startTime;
+            } else {
+              widthTime += startTime;
+            }
             filePath = null;
-
-            if (inIndex == currentStory.length - 1) {
-              if (storyIndex == widget.storyBy.length - 1) {
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  Navigator.of(context).pop();
-                });
-                exitStory = true;
+            if (startTime == secTime) {
+              widthTime = 0;
+              if (inIndex == currentStory.length - 1) {
+                if (storyIndex == widget.storyBy.length - 1) {
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    Navigator.of(context).pop();
+                  });
+                  exitStory = true;
+                } else {
+                  widthTime = 0;
+                  storyIndex++;
+                  inIndex = 0;
+                  storyLoading = true;
+                }
               } else {
-                storyIndex++;
-                inIndex = 0;
+                widthTime = 0;
+                inIndex++;
                 storyLoading = true;
               }
-            } else {
-              inIndex++;
-              storyLoading = true;
+              storyTimer.cancel();
             }
           });
         }
@@ -201,18 +216,37 @@ class _StoryScreenState extends State<StoryScreen> {
                       itemCount: currentStory.length,
                       itemBuilder: (ctx, index) {
                         return Container(
+                            alignment: Alignment.centerLeft,
                             margin: EdgeInsets.only(
                                 right: ScreenUtil().setWidth(5)),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.all(
                                   Radius.circular(ScreenUtil().setWidth(5))),
-                              color: Colors.white,
+                              color:
+                                  index < inIndex ? Colors.white : Colors.grey,
                             ),
                             height: ScreenUtil().setHeight(1.5),
                             width: (ScreenUtil().setWidth(350) -
                                     ScreenUtil().setWidth(5) *
                                         currentStory.length) /
-                                currentStory.length);
+                                currentStory.length,
+                            child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(
+                                          ScreenUtil().setWidth(5))),
+                                  color: Colors.white,
+                                ),
+                                height: ScreenUtil().setHeight(1.5),
+                                width: index != inIndex
+                                    ? 0
+                                    : startTime == null
+                                        ? 0
+                                        : ((ScreenUtil().setWidth(350) -
+                                                    ScreenUtil().setWidth(5) *
+                                                        currentStory.length) /
+                                                currentStory.length) *
+                                            (widthTime / 5)));
                       }),
                 ),
                 Row(
@@ -300,6 +334,8 @@ class _StoryScreenState extends State<StoryScreen> {
                             onTap: () {
                               if (mounted) {
                                 setState(() {
+                                  widthTime = 0;
+                                  storyLoading = true;
                                   filePath = null;
                                   if (storyTimer != null) {
                                     storyTimer.cancel();
@@ -325,6 +361,8 @@ class _StoryScreenState extends State<StoryScreen> {
                             onTap: () {
                               if (mounted) {
                                 setState(() {
+                                  widthTime = 0;
+                                  storyLoading = true;
                                   filePath = null;
                                   if (storyTimer != null) {
                                     storyTimer.cancel();
@@ -348,11 +386,73 @@ class _StoryScreenState extends State<StoryScreen> {
                         ],
                       ),
                     ),
-                    onLongPress: () {
+                    onLongPressStart: (_) {
+                      if (mounted) {
+                        setState(() {
+                          storyTimer.cancel();
+                        });
+                      }
+                      print(startTime);
                       print('pause');
                     },
-                  )
-                ])
+                    onLongPressEnd: (_) {
+                      changeStory(5 - startTime);
+                    },
+                  ),
+                  // Positioned(
+                  //   bottom: 0,
+                  //   child: Container(
+                  //     width: ScreenUtil().setWidth(360),
+                  //     padding: EdgeInsets.symmetric(
+                  //         horizontal: ScreenUtil().setWidth(20),
+                  //         vertical: ScreenUtil().setHeight(10)),
+                  //     child: Row(
+                  //       children: <Widget>[
+                  //         Container(
+                  //             width: ScreenUtil().setWidth(300),
+                  //             child: TextField(
+                  //               cursorColor: Colors.white,
+                  //               maxLines: null,
+                  //               keyboardType: TextInputType.multiline,
+                  //               textInputAction: TextInputAction.newline,
+                  //               onSubmitted: (value) {},
+                  //               decoration: InputDecoration(
+                  //                   focusedBorder: OutlineInputBorder(
+                  //                       borderRadius: BorderRadius.all(
+                  //                           Radius.circular(
+                  //                               ScreenUtil().setHeight(20))),
+                  //                       borderSide: BorderSide(
+                  //                           color: Colors.white, width: 0.5)),
+                  //                   focusColor: Colors.white,
+                  //                   enabledBorder: OutlineInputBorder(
+                  //                       borderRadius: BorderRadius.all(
+                  //                           Radius.circular(
+                  //                               ScreenUtil().setHeight(20))),
+                  //                       borderSide: BorderSide(
+                  //                           color: Colors.white, width: 0.5)),
+                  //                   contentPadding: EdgeInsets.only(
+                  //                       //  top: ScreenUtil().setHeight(5),
+                  //                       //bottom: ScreenUtil().setHeight(5),
+                  //                       left: ScreenUtil().setWidth(20)),
+                  //                   hintText: 'Reply',
+                  //                   hintStyle: TextStyle(color: Colors.grey)),
+                  //               controller: _controller,
+                  //               style: TextStyle(color: Colors.white),
+                  //               textCapitalization:
+                  //                   TextCapitalization.sentences,
+                  //               autocorrect: true,
+                  //               enableSuggestions: true,
+                  //               onChanged: (value) {
+                  //                 setState(() {
+                  //                   //   _enteredMessage = value;
+                  //                 });
+                  //               },
+                  //             )),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // )
+                ]),
               ],
             );
           }),

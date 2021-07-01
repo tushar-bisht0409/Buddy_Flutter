@@ -26,7 +26,7 @@ class FeedBloc {
           });
         } else if (event.action == 'send') {
           FormData data;
-          if (event.category == 'text') {
+          if (event.mediaCategory == 'text') {
             data = FormData.fromMap({
               "feedID": event.feedID,
               "caption": event.caption,
@@ -55,17 +55,11 @@ class FeedBloc {
             });
           }
           response = await dio.post(serverURl + '/postfeed', data: data);
-        } else if (event.action == 'like') {
-          response = await dio.post(serverURl + '/postlike', queryParameters: {
-            "feedID": event.feedID,
-            "senderID": userID,
-            "like": event.like
-          });
         }
       } catch (e) {
         print(e);
       }
-      _feedInfoSink.add(response.data['msz']);
+      _feedInfoSink.add([response.data['msz'], response.data['success']]);
     });
   }
 
