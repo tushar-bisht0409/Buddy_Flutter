@@ -26,35 +26,91 @@ class FeedBloc {
           });
         } else if (event.action == 'send') {
           FormData data;
-          if (event.mediaCategory == 'text') {
-            data = FormData.fromMap({
-              "feedID": event.feedID,
-              "caption": event.caption,
-              "creatorName": event.creatorName,
-              "creatorID": event.creatorID,
-              "createdAt": event.createdAt,
-              "category": event.category,
-              "mediaCategory": event.mediaCategory,
-              "academia": event.academia,
-              "timestamp": event.timestamp,
-            });
+          if (event.poll == false) {
+            if (event.mediaCategory == 'text') {
+              data = FormData.fromMap({
+                "feedID": event.feedID,
+                "caption": event.caption,
+                "creatorName": event.creatorName,
+                "creatorID": event.creatorID,
+                "createdAt": event.createdAt,
+                "category": event.category,
+                "mediaCategory": event.mediaCategory,
+                "academia": event.academia,
+                "poll": event.poll,
+                "timestamp": event.timestamp,
+              });
+            } else {
+              String fileName = event.mediaPath.split("/").last;
+              data = FormData.fromMap({
+                "feedID": event.feedID,
+                "caption": event.caption,
+                "creatorName": event.creatorName,
+                "creatorID": event.creatorID,
+                "createdAt": event.createdAt,
+                "category": event.category,
+                "mediaCategory": event.mediaCategory,
+                "academia": event.academia,
+                "poll": event.poll,
+                "timestamp": event.timestamp,
+                "file": await MultipartFile.fromFile(event.mediaPath,
+                    filename: fileName)
+              });
+            }
           } else {
-            String fileName = event.mediaPath.split("/").last;
-            data = FormData.fromMap({
-              "feedID": event.feedID,
-              "caption": event.caption,
-              "creatorName": event.creatorName,
-              "creatorID": event.creatorID,
-              "createdAt": event.createdAt,
-              "category": event.category,
-              "mediaCategory": event.mediaCategory,
-              "academia": event.academia,
-              "timestamp": event.timestamp,
-              "file": await MultipartFile.fromFile(event.mediaPath,
-                  filename: fileName)
-            });
+            if (event.mediaCategory == 'text') {
+              data = FormData.fromMap({
+                "feedID": event.feedID,
+                "caption": event.caption,
+                "creatorName": event.creatorName,
+                "creatorID": event.creatorID,
+                "createdAt": event.createdAt,
+                "category": event.category,
+                "mediaCategory": event.mediaCategory,
+                "academia": event.academia,
+                "poll": event.poll,
+                "timestamp": event.timestamp,
+                "options": event.options,
+                "endDate": event.endDate,
+                "endTime": event.endTime,
+                "endtimeStamp": event.endtimestamp,
+              });
+            } else {
+              String fileName = event.mediaPath.split("/").last;
+              data = FormData.fromMap({
+                "feedID": event.feedID,
+                "caption": event.caption,
+                "creatorName": event.creatorName,
+                "creatorID": event.creatorID,
+                "createdAt": event.createdAt,
+                "category": event.category,
+                "mediaCategory": event.mediaCategory,
+                "academia": event.academia,
+                "poll": event.poll,
+                "timestamp": event.timestamp,
+                "options": event.options,
+                "endDate": event.endDate,
+                "endTime": event.endTime,
+                "endtimeStamp": event.endtimestamp,
+                "file": await MultipartFile.fromFile(event.mediaPath,
+                    filename: fileName)
+              });
+            }
           }
           response = await dio.post(serverURl + '/postfeed', data: data);
+        } else if (event.action == "vote") {
+          var votedata = {
+            "userID": "1", //userID,
+            "feedID": event.feedID,
+            "option": event.caption,
+            "vote": event.category
+          };
+
+          response = await dio.post(
+            serverURl + '/postfeedvote',
+            data: votedata,
+            options: Options(contentType: Headers.formUrlEncodedContentType),
+          );
         }
       } catch (e) {
         print(e);

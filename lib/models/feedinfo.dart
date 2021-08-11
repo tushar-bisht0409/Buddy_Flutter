@@ -12,6 +12,12 @@ class FeedInfo {
   String mediaCategory;
   String mediaPath;
   String like;
+  bool poll;
+  String endDate;
+  String endTime;
+  String endtimestamp;
+  String options;
+  dynamic voters;
   List<String> likes;
   List<String> seenBy;
   List<String> following;

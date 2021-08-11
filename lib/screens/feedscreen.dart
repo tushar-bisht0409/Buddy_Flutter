@@ -73,14 +73,14 @@ class _FeedScreenState extends State<FeedScreen>
           child: Text(
             'Following',
             style:
-                TextStyle(color: tbcolor[0], fontSize: ScreenUtil().setSp(12)),
+                TextStyle(color: tbcolor[1], fontSize: ScreenUtil().setSp(12)),
           ),
         ),
         Tab(
           child: Text(
             'Academia',
             style:
-                TextStyle(color: tbcolor[1], fontSize: ScreenUtil().setSp(12)),
+                TextStyle(color: tbcolor[0], fontSize: ScreenUtil().setSp(12)),
           ),
         ),
         Tab(

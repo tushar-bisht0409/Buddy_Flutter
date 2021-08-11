@@ -1,3 +1,4 @@
+import 'package:buddy/screens/profilescreen.dart';
 import 'package:buddy/screens/sandcscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -30,85 +31,91 @@ class _MenuScreenState extends State<MenuScreen> {
                   IconButton(
                       icon: Icon(Icons.chat_bubble_rounded), onPressed: () {}),
                 ]),
-            Card(
-                elevation: 10,
-                margin:
-                    EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(20)),
-                shape: RoundedRectangleBorder(
-                  borderRadius:
-                      BorderRadius.circular(ScreenUtil().setHeight(30)),
-                ),
-                child: Container(
-                    //     margin: EdgeInsets.symmetric(
-                    //       horizontal: ScreenUtil().setWidth(20)),
-                    width: ScreenUtil().setWidth(320),
-                    decoration: BoxDecoration(
-                        borderRadius:
-                            BorderRadius.circular(ScreenUtil().setHeight(30)),
-                        color: Colors.white),
-                    child: Row(
-                      children: <Widget>[
-                        Padding(
+            GestureDetector(
+              child: Card(
+                  elevation: 10,
+                  margin: EdgeInsets.symmetric(
+                      horizontal: ScreenUtil().setWidth(20)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius:
+                        BorderRadius.circular(ScreenUtil().setHeight(30)),
+                  ),
+                  child: Container(
+                      //     margin: EdgeInsets.symmetric(
+                      //       horizontal: ScreenUtil().setWidth(20)),
+                      width: ScreenUtil().setWidth(320),
+                      decoration: BoxDecoration(
+                          borderRadius:
+                              BorderRadius.circular(ScreenUtil().setHeight(30)),
+                          color: Colors.white),
+                      child: Row(
+                        children: <Widget>[
+                          Padding(
+                              padding: EdgeInsets.only(
+                                  top: ScreenUtil().setHeight(10),
+                                  bottom: ScreenUtil().setHeight(10),
+                                  left: ScreenUtil().setWidth(10),
+                                  right: ScreenUtil().setWidth(10)),
+                              child: CircleAvatar(
+                                child: Container(
+                                  height: ScreenUtil().setHeight(100),
+                                  width: ScreenUtil().setHeight(100),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(
+                                          ScreenUtil().setHeight(50)),
+                                      //border: Border.all(
+                                      //  color: Colors.white,
+                                      //style: BorderStyle.solid,
+                                      // width: 2.0),
+                                      image: DecorationImage(
+                                          image: AssetImage(
+                                              'lib/assets/images/test.png'))),
+                                ),
+                                radius: ScreenUtil().setHeight(50),
+                                backgroundColor: Colors.black,
+                              )),
+                          Container(
+                            height: ScreenUtil().setHeight(100),
+                            width: ScreenUtil().setWidth(320) -
+                                ScreenUtil().setWidth(20) -
+                                ScreenUtil().setHeight(100),
+                            alignment: Alignment.topCenter,
                             padding: EdgeInsets.only(
                                 top: ScreenUtil().setHeight(10),
                                 bottom: ScreenUtil().setHeight(10),
                                 left: ScreenUtil().setWidth(10),
                                 right: ScreenUtil().setWidth(10)),
-                            child: CircleAvatar(
-                              child: Container(
-                                height: ScreenUtil().setHeight(100),
-                                width: ScreenUtil().setHeight(100),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(
-                                        ScreenUtil().setHeight(50)),
-                                    //border: Border.all(
-                                    //  color: Colors.white,
-                                    //style: BorderStyle.solid,
-                                    // width: 2.0),
-                                    image: DecorationImage(
-                                        image: AssetImage(
-                                            'lib/assets/images/test.png'))),
-                              ),
-                              radius: ScreenUtil().setHeight(50),
-                              backgroundColor: Colors.black,
-                            )),
-                        Container(
-                          height: ScreenUtil().setHeight(100),
-                          width: ScreenUtil().setWidth(320) -
-                              ScreenUtil().setWidth(20) -
-                              ScreenUtil().setHeight(100),
-                          alignment: Alignment.topCenter,
-                          padding: EdgeInsets.only(
-                              top: ScreenUtil().setHeight(10),
-                              bottom: ScreenUtil().setHeight(10),
-                              left: ScreenUtil().setWidth(10),
-                              right: ScreenUtil().setWidth(10)),
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Text(
-                                  'Adolf Hitler',
-                                  style: TextStyle(
-                                      fontSize: ScreenUtil().setSp(20),
-                                      fontWeight: FontWeight.w900),
-                                ),
-                                Text(
-                                  '100+ Friends',
-                                  style: TextStyle(
-                                      fontSize: ScreenUtil().setSp(16),
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                Text(
-                                  'Tap to view more info',
-                                  style: TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: ScreenUtil().setSp(10),
+                            child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(
+                                    'Adolf Hitler',
+                                    style: TextStyle(
+                                        fontSize: ScreenUtil().setSp(20),
+                                        fontWeight: FontWeight.w900),
                                   ),
-                                ),
-                              ]),
-                        )
-                      ],
-                    ))),
+                                  Text(
+                                    '100+ Friends',
+                                    style: TextStyle(
+                                        fontSize: ScreenUtil().setSp(16),
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  Text(
+                                    'Tap to view more info',
+                                    style: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: ScreenUtil().setSp(10),
+                                    ),
+                                  ),
+                                ]),
+                          )
+                        ],
+                      ))),
+              onTap: () {
+                Navigator.of(context).pushNamed(ProfileScreen.routeName);
+              },
+            ),
             SizedBox(
               height: ScreenUtil().setHeight(20),
             ),

@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:buddy/main.dart';
 import 'package:buddy/screens/menuscreen.dart';
 import 'package:buddy/screens/searchscreen.dart';
-import 'package:buddy/widgets/addpost.dart';
+import 'package:buddy/screens/addpostscreen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:buddy/screens/feedscreen.dart';
@@ -14,6 +14,7 @@ import 'package:permission_handler/permission_handler.dart';
 var appDir;
 
 class HomeScreen extends StatefulWidget {
+  static const routeName = '/home';
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -177,13 +178,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 onTap: () {
-                  showModalBottomSheet(
-                      backgroundColor: Colors.transparent,
-                      context: context,
-                      isScrollControlled: true,
-                      builder: (BuildContext context) {
-                        return AddPost("", "");
-                      });
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (builder) => AddPostScreen("", "")));
                 },
               ))
         ]));

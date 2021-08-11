@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:buddy/screens/imageviewScreen.dart';
 import 'package:buddy/screens/videoviewscreen.dart';
-import 'package:buddy/widgets/addpost.dart';
+import 'package:buddy/screens/addpostscreen.dart';
 import 'package:buddy/widgets/addstory.dart';
 import 'package:camera/camera.dart';
 // import 'package:chatapp/Screens/CameraView.dart';
@@ -197,8 +197,10 @@ class _CameraScreenState extends State<CameraScreen> {
           MaterialPageRoute(
               builder: (builder) => AddStory("Image", file.path)));
     } else if (widget.type == "Post") {
-      Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (builder) => AddPost(file.path, "image")));
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (builder) => AddPostScreen(file.path, "image")));
     }
   }
 }

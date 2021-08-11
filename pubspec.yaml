@@ -66,6 +66,7 @@ flutter:
     - lib/assets/images/contest.png
     - lib/assets/images/bg.png
     - lib/assets/images/explore.png
+    - lib/assets/images/club.png
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

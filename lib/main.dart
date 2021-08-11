@@ -1,5 +1,6 @@
 //import 'package:buddy/blocs/auth_bloc.dart';
 import 'package:buddy/models/appcolor.dart';
+import 'package:buddy/screens/addpostscreen.dart';
 import 'package:buddy/screens/authscreen.dart';
 import 'package:buddy/screens/camerscreen.dart';
 import 'package:buddy/screens/commentscreen.dart';
@@ -8,6 +9,7 @@ import 'package:buddy/screens/imageviewScreen.dart';
 import 'package:buddy/screens/menuscreen.dart';
 import 'package:buddy/screens/personchatscreen.dart';
 import 'package:buddy/screens/profileinfoscreen.dart';
+import 'package:buddy/screens/profilescreen.dart';
 import 'package:buddy/screens/sandcprofilescreen.dart';
 import 'package:buddy/screens/sandcscreen.dart';
 import 'package:buddy/screens/searchscreen.dart';
@@ -70,6 +72,8 @@ class MyApp extends StatelessWidget {
                     VideoViewScreen.routeName: (context) => VideoViewScreen(),
                     StoryScreen.routeName: (context) => StoryScreen('', '', ''),
                     CommentScreen.routeName: (context) => CommentScreen(""),
+                    AddPostScreen.routeName: (context) => AddPostScreen("", ""),
+                    ProfileScreen.routeName: (context) => ProfileScreen(""),
                   });
             }));
   }

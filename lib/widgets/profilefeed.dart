@@ -8,34 +8,27 @@ import 'package:buddy/widgets/loadmedia.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class FeedPost extends StatefulWidget {
-  var type;
-  FeedPost(this.type);
+class ProfileFeed extends StatefulWidget {
   @override
-  _FeedPostState createState() => _FeedPostState();
+  _ProfileFeedState createState() => _ProfileFeedState();
 }
 
-class _FeedPostState extends State<FeedPost> {
+class _ProfileFeedState extends State<ProfileFeed> {
   FeedBloc feedbloc = FeedBloc();
   LikeBloc likebloc = LikeBloc();
   FeedInfo feed = FeedInfo();
   FeedInfo like = FeedInfo();
+  var type = "Following";
   var captionExpand = [];
   @override
   Widget build(BuildContext context) {
     return ListView(children: <Widget>[
-      widget.type == 'Following'
-          ? Container(
-              height: ScreenUtil().setHeight(85),
-              child: FeedStory(),
-            )
-          : Container(),
       StreamBuilder(
           stream: feedbloc.feedInfoStream,
           builder: (ctx, snapshot) {
             feed.action = "receive";
-            feed.getType = widget.type; //Following // World // Academia
-            feed.following = ["ss", "aa", "12345678"]; // Following List
+            feed.getType = type; //Following // World // Academia
+            feed.following = ["12345678"]; // Following List (UserID only)
             feed.academia = "";
             feedbloc.eventSink.add(feed);
             var feedInfo;
